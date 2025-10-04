@@ -19,8 +19,8 @@ public class Cliente {
     private String telefone;
 
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Endereco> enderecos;
+ /*   @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Endereco> enderecos;*/
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pedido> pedidos;
@@ -69,13 +69,6 @@ public class Cliente {
         this.telefone = telefone;
     }
 
-    public List<Endereco> getEnderecos() {
-        return enderecos;
-    }
-
-    public void setEnderecos(List<Endereco> enderecos) {
-        this.enderecos = enderecos;
-    }
 
     public List<Pedido> getPedidos() {
         return pedidos;
@@ -106,7 +99,6 @@ public class Cliente {
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
                 ", telefone='" + telefone + '\'' +
-                ", enderecos=" + enderecos +
                 ", pedidos=" + pedidos +
                 '}';
     }

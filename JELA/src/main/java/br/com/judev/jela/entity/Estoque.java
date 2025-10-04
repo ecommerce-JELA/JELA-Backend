@@ -38,7 +38,6 @@ public class Estoque {
         this.dataAtualizacao = LocalDate.now();
     }
 
-    // Getters e Setters
     public Integer getIdEstoque() {
         return idEstoque;
     }

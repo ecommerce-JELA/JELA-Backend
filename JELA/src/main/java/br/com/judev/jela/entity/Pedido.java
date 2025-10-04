@@ -19,7 +19,7 @@ public class Pedido {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id" , nullable = false)
-    private Cliente cLiente;
+    private Cliente cliente;
 
     public Integer getId() {
         return id;
@@ -42,10 +42,10 @@ public class Pedido {
     }
 
     public Cliente getcLiente() {
-        return cLiente;
+        return cliente;
     }
 
-    public void setcLiente(Cliente cLiente) {
-        this.cLiente = cLiente;
+    public void setcLiente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }

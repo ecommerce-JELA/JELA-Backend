@@ -3,17 +3,16 @@ package br.com.judev.jela.entity;
 import br.com.judev.jela.entity.enums.Tamanho;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Table(name = "tb_produto")
 @Entity
+@Table(name = "tb_produto")
 public class Produto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "O nome do produto é obrigatório")
     @Column(nullable = false)
@@ -29,11 +28,6 @@ public class Produto {
     @Column(nullable = false)
     private BigDecimal preco;
 
-    @NotNull(message = "A quantidade é obrigatória")
-    @Min(value = 0, message = "A quantidade deve ser maior que 0")
-    @Column(nullable = false)
-    private Integer quantidade;
-
     @PastOrPresent(message = "A data de cadastro não pode ser futura")
     @Column(name = "data_cadastro")
     private LocalDate dataCadastro = LocalDate.now();
@@ -43,81 +37,35 @@ public class Produto {
     @Column(nullable = false)
     private Tamanho tamanho;
 
-    @ManyToOne(cascade =  CascadeType.ALL)
-    @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    @OneToOne(mappedBy = "produto", cascade = CascadeType.ALL)
+    private Estoque estoque;
 
     public Produto() {}
 
-    public Produto(String nome, String descricao, BigDecimal preco, Integer quantidade) {
+    public Produto(String nome, String descricao, BigDecimal preco, Tamanho tamanho, Estoque estoque) {
         this.nome = nome;
         this.descricao = descricao;
         this.preco = preco;
-        this.quantidade = quantidade;
+        this.tamanho = tamanho;
+        this.estoque = estoque;
         this.dataCadastro = LocalDate.now();
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public @NotBlank(message = "O nome do produto é obrigatório") String getNome() {
-        return nome;
-    }
-
-    public void setNome(@NotBlank(message = "O nome do produto é obrigatório") String nome) {
-        this.nome = nome;
-    }
-
-    public @NotBlank(message = "A descrição é obrigatória") @Size(max = 200, message = "A descrição não pode passar de 200 caracteres") String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(@NotBlank(message = "A descrição é obrigatória") @Size(max = 200, message = "A descrição não pode passar de 200 caracteres") String descricao) {
-        this.descricao = descricao;
-    }
-
-    public @NotNull(message = "O preço é obrigatório") @DecimalMin(value = "0.01", message = "O preço deve ser maior que 0") BigDecimal getPreco() {
-        return preco;
-    }
-
-    public void setPreco(@NotNull(message = "O preço é obrigatório") @DecimalMin(value = "0.01", message = "O preço deve ser maior que 0") BigDecimal preco) {
-        this.preco = preco;
-    }
-
-    public @NotNull(message = "A quantidade é obrigatória") @Min(value = 0, message = "A quantidade deve ser maior que 0") Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(@NotNull(message = "A quantidade é obrigatória") @Min(value = 0, message = "A quantidade deve ser maior que 0") Integer quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public @PastOrPresent(message = "A data de cadastro não pode ser futura") LocalDate getDataCadastro() {
-        return dataCadastro;
-    }
-
-    public void setDataCadastro(@PastOrPresent(message = "A data de cadastro não pode ser futura") LocalDate dataCadastro) {
-        this.dataCadastro = dataCadastro;
-    }
-
-    public @NotNull(message = "O tamanho é obrigatório") Tamanho getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(@NotNull(message = "O tamanho é obrigatório") Tamanho tamanho) {
-        this.tamanho = tamanho;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public Long getId() { return id; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
+    public BigDecimal getPreco() { return preco; }
+    public void setPreco(BigDecimal preco) { this.preco = preco; }
+    public LocalDate getDataCadastro() { return dataCadastro; }
+    public void setDataCadastro(LocalDate dataCadastro) { this.dataCadastro = dataCadastro; }
+    public Tamanho getTamanho() { return tamanho; }
+    public void setTamanho(Tamanho tamanho) { this.tamanho = tamanho; }
+    public Estoque getEstoque() { return estoque; }
+    public void setEstoque(Estoque estoque) {this.estoque = estoque;
+    if(estoque.getProduto() != this){
+        estoque.setProduto(this);
+       }
     }
 }

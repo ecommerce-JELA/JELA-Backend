@@ -1,5 +1,6 @@
 package br.com.judev.jela.service;
 
+import br.com.judev.jela.dto.Pedido.ItemResponse;
 import br.com.judev.jela.dto.Pedido.PedidoRequest;
 import br.com.judev.jela.dto.Pedido.PedidoResponse;
 import br.com.judev.jela.entity.*;
@@ -11,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,7 +63,27 @@ public class PedidoService {
 
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
 
-        return new PedidoResponse("Pedido Criado com Sucesso!");
-    }
+        return new PedidoResponse(
+                pedidoSalvo.getId(),
+                pedidoSalvo.getStatus(),
+                pedidoSalvo.getData(),
+                pedidoSalvo.getCliente().getId()
 
+                );
+    }
+    public List<PedidoResponse> listarTodos() {
+        return pedidoRepository.findAll()
+                .stream()
+                .map(pedido -> new PedidoResponse(
+                        pedido.getId(),
+                        pedido.getCliente().getId(),
+                        pedido.getItens().stream()
+                                .map(item -> new ItemResponse(
+                                       item.getProduto().getId(),
+                                        item
+                                ))
+                                .toList()
+                ))
+                .toList();
+    }
 }

@@ -36,5 +36,6 @@ public class ClienteController {
         } else {
             return ResponseEntity.status(HttpStatus.OK).body((List<Object>) cliente.get());
         }
+
     }
 }

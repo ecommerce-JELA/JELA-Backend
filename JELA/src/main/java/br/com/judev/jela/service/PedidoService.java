@@ -11,7 +11,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,7 @@ public class PedidoService {
                 .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
 
         Pedido pedido = new Pedido();
-        pedido.setCliente(cliente);
+        pedido.setcliente(cliente);
         pedido.setData(LocalDateTime.now());
         pedido.setStatus(StatusPedido.PENDENTE);
 

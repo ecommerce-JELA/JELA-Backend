@@ -12,9 +12,4 @@ public record PedidoResponse(
          @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
          LocalDateTime data,
          Cliente cliente
-
-) {
-
-public record PedidoResponse(String message) {
-
-}
+){}

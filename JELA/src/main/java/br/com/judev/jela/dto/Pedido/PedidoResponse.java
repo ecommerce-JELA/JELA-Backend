@@ -14,4 +14,7 @@ public record PedidoResponse(
          Cliente cliente
 
 ) {
+
+public record PedidoResponse(String message) {
+
 }

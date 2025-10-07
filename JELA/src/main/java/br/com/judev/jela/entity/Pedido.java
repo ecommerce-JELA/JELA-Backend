@@ -4,6 +4,8 @@ import br.com.judev.jela.entity.enums.StatusPedido;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_pedido")
@@ -16,6 +18,9 @@ public class Pedido {
 
     @Enumerated(EnumType.STRING)  // salva como texto no banco (ex: "PENDENTE")
     private StatusPedido status;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ItemPedido> itens = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id" , nullable = false)
@@ -41,11 +46,27 @@ public class Pedido {
         this.status = status;
     }
 
+
     public Cliente getcLiente() {
         return cliente;
     }
 
     public void setcLiente(Cliente cliente) {
+      
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+
         this.cliente = cliente;
     }
 }

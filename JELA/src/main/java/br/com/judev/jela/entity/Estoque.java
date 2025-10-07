@@ -1,6 +1,7 @@
 package br.com.judev.jela.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 
 import java.time.LocalDate;
 
@@ -16,6 +17,7 @@ public class Estoque {
     private Integer qtdAtual;
 
     @Column(nullable = false)
+    @DecimalMin("0.01")
     private Integer qtdMinima;
 
     @Column(nullable = false)

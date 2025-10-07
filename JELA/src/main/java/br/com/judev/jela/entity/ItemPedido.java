@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "tb_item_pedido")
 public class ItemPedido {
@@ -24,6 +26,11 @@ public class ItemPedido {
     @Min(value = 0, message = "A quantidade deve ser pelo menos 1.")
     private Integer quantidade;
 
+    private BigDecimal subtotal;
+
+    @Column(nullable = false)
+    private BigDecimal precoUnitario;
+
     public ItemPedido() {}
 
     public ItemPedido(Produto produto, Integer quantidade) {
@@ -43,7 +50,31 @@ public class ItemPedido {
         return produto;
     }
 
-    public Integer getQuantidade() {
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public BigDecimal getPrecoUnitario() {
+        return precoUnitario;
+    }
+
+    public void setPrecoUnitario(BigDecimal precoUnitario) {
+        this.precoUnitario = precoUnitario;
+    }
+
+    public void setProduto(Produto produto) {
+        this.produto = produto;
+    }
+
+    public @NotNull(message = "A quantidade é obrigatória.") @Min(value = 0, message = "A quantidade deve ser pelo menos 1.") Integer getQuantidade() {
         return quantidade;
+    }
+
+    public void setQuantidade(@NotNull(message = "A quantidade é obrigatória.") @Min(value = 0, message = "A quantidade deve ser pelo menos 1.") Integer quantidade) {
+        this.quantidade = quantidade;
     }
 }

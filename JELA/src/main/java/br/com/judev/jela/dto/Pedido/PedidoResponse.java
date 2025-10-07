@@ -1,15 +1,13 @@
 package br.com.judev.jela.dto.Pedido;
 
-import br.com.judev.jela.entity.Cliente;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import br.com.judev.jela.entity.enums.StatusPedido;
 
 import java.time.LocalDateTime;
 
 public record PedidoResponse(
-         Integer id,
-         String status,
-         Integer clienteId,
-         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
-         LocalDateTime data,
-         Cliente cliente
-){}
+        Integer id,
+        StatusPedido status,
+        LocalDateTime data,
+        Integer clienteId
+){
+}

@@ -1,4 +1,4 @@
-package br.com.judev.jela.repository;
+package br.com.judev.jela.Repository;
 
 import br.com.judev.jela.entity.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;

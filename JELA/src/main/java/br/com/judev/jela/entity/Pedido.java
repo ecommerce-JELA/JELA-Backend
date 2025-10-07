@@ -47,26 +47,19 @@ public class Pedido {
     }
 
 
-    public Cliente getcLiente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setcLiente(Cliente cliente) {
-      
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public Set<ItemPedido> getItens() {
         return itens;
     }
 
     public void setItens(Set<ItemPedido> itens) {
         this.itens = itens;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-
-        this.cliente = cliente;
     }
 }

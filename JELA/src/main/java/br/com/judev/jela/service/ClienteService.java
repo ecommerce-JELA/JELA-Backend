@@ -1,8 +1,8 @@
 package br.com.judev.jela.service;
 
-import br.com.judev.jela.Repository.ClienteRepository;
 import br.com.judev.jela.dto.cliente.RegisterClienteRequest;
 import br.com.judev.jela.entity.Cliente;
+import br.com.judev.jela.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

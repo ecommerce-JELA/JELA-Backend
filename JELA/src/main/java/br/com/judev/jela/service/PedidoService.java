@@ -4,13 +4,14 @@ import br.com.judev.jela.dto.Pedido.PedidoRequest;
 import br.com.judev.jela.dto.Pedido.PedidoResponse;
 import br.com.judev.jela.entity.*;
 import br.com.judev.jela.entity.enums.StatusPedido;
-import br.com.judev.jela.Repository.ClienteRepository;
-import br.com.judev.jela.Repository.PedidoRepository;
-import br.com.judev.jela.Repository.ProdutoRepository;
+import br.com.judev.jela.repository.ClienteRepository;
+import br.com.judev.jela.repository.PedidoRepository;
+import br.com.judev.jela.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

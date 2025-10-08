@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
    Optional<Estoque> findById(int id);
+
 }

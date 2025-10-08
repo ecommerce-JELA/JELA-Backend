@@ -16,7 +16,7 @@ public class Pedido {
     private Integer id;
     private LocalDateTime data;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)  // salva como texto no banco (ex: "PENDENTE")
     private StatusPedido status;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -46,19 +46,27 @@ public class Pedido {
         this.status = status;
     }
 
-    public Cliente getCliente() {
+
+    public Cliente getcLiente() {
         return cliente;
     }
 
-    public void setcliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
+    public void setcLiente(Cliente cliente) {
+      
     public Set<ItemPedido> getItens() {
         return itens;
     }
 
     public void setItens(Set<ItemPedido> itens) {
         this.itens = itens;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+
+        this.cliente = cliente;
     }
 }

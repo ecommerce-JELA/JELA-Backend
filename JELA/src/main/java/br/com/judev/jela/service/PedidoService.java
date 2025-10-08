@@ -1,6 +1,5 @@
 package br.com.judev.jela.service;
 
-import br.com.judev.jela.dto.Pedido.ItemResponse;
 import br.com.judev.jela.dto.Pedido.PedidoRequest;
 import br.com.judev.jela.dto.Pedido.PedidoResponse;
 import br.com.judev.jela.entity.*;
@@ -34,7 +33,7 @@ public class PedidoService {
                 .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
 
         Pedido pedido = new Pedido();
-        pedido.setcliente(cliente);
+        pedido.setCliente(cliente);
         pedido.setData(LocalDateTime.now());
         pedido.setStatus(StatusPedido.PENDENTE);
 
@@ -63,27 +62,7 @@ public class PedidoService {
 
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
 
-        return new PedidoResponse(
-                pedidoSalvo.getId(),
-                pedidoSalvo.getStatus(),
-                pedidoSalvo.getData(),
-                pedidoSalvo.getCliente().getId()
+        return new PedidoResponse("Pedido Criado com Sucesso!");
+    }
 
-                );
-    }
-    public List<PedidoResponse> listarTodos() {
-        return pedidoRepository.findAll()
-                .stream()
-                .map(pedido -> new PedidoResponse(
-                        pedido.getId(),
-                        pedido.getCliente().getId(),
-                        pedido.getItens().stream()
-                                .map(item -> new ItemResponse(
-                                       item.getProduto().getId(),
-                                        item
-                                ))
-                                .toList()
-                ))
-                .toList();
-    }
 }

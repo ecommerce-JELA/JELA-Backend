@@ -5,9 +5,9 @@ import br.com.judev.jela.dto.Pedido.PedidoRequest;
 import br.com.judev.jela.dto.Pedido.PedidoResponse;
 import br.com.judev.jela.entity.*;
 import br.com.judev.jela.entity.enums.StatusPedido;
-import br.com.judev.jela.repository.ClienteRepository;
-import br.com.judev.jela.repository.PedidoRepository;
-import br.com.judev.jela.repository.ProdutoRepository;
+import br.com.judev.jela.Repository.ClienteRepository;
+import br.com.judev.jela.Repository.PedidoRepository;
+import br.com.judev.jela.Repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -67,23 +67,39 @@ public class PedidoService {
                 pedidoSalvo.getId(),
                 pedidoSalvo.getStatus(),
                 pedidoSalvo.getData(),
-                pedidoSalvo.getCliente().getId()
-
+                pedidoSalvo.getCliente().getId(),
+                pedidoSalvo.getItens()
                 );
     }
     public List<PedidoResponse> listarTodos() {
         return pedidoRepository.findAll()
                 .stream()
-                .map(pedido -> new PedidoResponse(
-                        pedido.getId(),
-                        pedido.getCliente().getId(),
-                        pedido.getItens().stream()
-                                .map(item -> new ItemResponse(
-                                       item.getProduto().getId(),
-                                        item
-                                ))
-                                .toList()
-                ))
+                .map(this::converterParaResponse)
                 .toList();
+    }
+
+    private PedidoResponse converterParaResponse(Pedido pedido) {
+        List<ItemResponse> itens = pedido.getItens()
+                .stream()
+                .map(this::converterItemParaResponse)
+                .toList();
+
+        return new PedidoResponse(
+                pedido.getId(),
+                pedido.getStatus(),
+                pedido.getData(),
+                pedido.getCliente().getId(),
+                pedido.getItens()
+        );
+    }
+
+    private ItemResponse converterItemParaResponse(ItemPedido item) {
+        return new ItemResponse(
+                item.getProduto().getId(),
+                item.getProduto().getNome(),
+                item.getQuantidade(),
+                item.getPrecoUnitario(),
+                item.getSubtotal()
+        );
     }
 }

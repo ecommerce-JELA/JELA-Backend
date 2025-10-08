@@ -2,7 +2,6 @@ package br.com.judev.jela.controller;
 
 import br.com.judev.jela.dto.Pedido.PedidoRequest;
 import br.com.judev.jela.dto.Pedido.PedidoResponse;
-import br.com.judev.jela.repository.PedidoRepository;
 import br.com.judev.jela.service.PedidoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

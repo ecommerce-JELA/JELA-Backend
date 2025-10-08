@@ -23,7 +23,7 @@ public class Pedido {
     private Set<ItemPedido> itens = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id" , nullable = false)
+    @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
     public Integer getId() {
@@ -46,13 +46,6 @@ public class Pedido {
         this.status = status;
     }
 
-
-    public Cliente getcLiente() {
-        return cliente;
-    }
-
-    public void setcLiente(Cliente cliente) {
-      
     public Set<ItemPedido> getItens() {
         return itens;
     }
@@ -66,7 +59,6 @@ public class Pedido {
     }
 
     public void setCliente(Cliente cliente) {
-
         this.cliente = cliente;
     }
 }

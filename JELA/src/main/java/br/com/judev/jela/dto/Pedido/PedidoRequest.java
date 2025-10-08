@@ -6,12 +6,12 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 public record PedidoRequest(
         @NotNull Integer clienteId,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
         LocalDateTime data,
         StatusPedido status,
-        @NotEmpty List<ItemRequest> itens) {
+        @NotEmpty Set<ItemRequest> itens) {
 }

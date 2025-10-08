@@ -1,12 +1,10 @@
 package br.com.judev.jela.service;
 
 import br.com.judev.jela.dto.cliente.*;
-import br.com.judev.jela.dto.cliente.LooginResponse;
 import br.com.judev.jela.dto.endereco.EnderecoResponse;
 import br.com.judev.jela.entity.Cliente;
 import br.com.judev.jela.Repository.ClienteRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -57,6 +55,5 @@ public class ClienteService {
 
         return new LoginResponse("Login realizado com sucesso!");
     }
-
 
 }

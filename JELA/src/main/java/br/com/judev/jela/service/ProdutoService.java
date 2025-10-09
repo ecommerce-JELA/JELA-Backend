@@ -6,11 +6,9 @@ import br.com.judev.jela.dto.Produto.ProdutoResponse;
 import br.com.judev.jela.entity.Produto;
 import br.com.judev.jela.entity.Estoque;
 import br.com.judev.jela.entity.enums.Tamanho;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {

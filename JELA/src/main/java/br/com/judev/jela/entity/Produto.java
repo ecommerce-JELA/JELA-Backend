@@ -63,9 +63,10 @@ public class Produto {
     public Tamanho getTamanho() { return tamanho; }
     public void setTamanho(Tamanho tamanho) { this.tamanho = tamanho; }
     public Estoque getEstoque() { return estoque; }
-    public void setEstoque(Estoque estoque) {this.estoque = estoque;
-    if(estoque.getProduto() != this){
-        estoque.setProduto(this);
+    public void setEstoque(Estoque estoque) {
+        this.estoque = this.estoque;
+    if(this.estoque.getProduto() != this){
+        this.estoque.setProduto(this);
        }
     }
 }

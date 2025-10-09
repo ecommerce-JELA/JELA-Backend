@@ -10,5 +10,4 @@ public record ProdutoResponse(
         BigDecimal preco,
         Tamanho tamanho,
         Estoque estoque
-) {
-}
+){}

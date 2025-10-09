@@ -1,7 +1,7 @@
 package br.com.judev.jela.controller;
 
 import br.com.judev.jela.Repository.ClienteRepository;
-import br.com.judev.jela.dto.cliente.RegisterClienteRequest;
+import br.com.judev.jela.dto.cliente.ClienteRequest;
 import br.com.judev.jela.entity.Cliente;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +21,7 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<Cliente> saveCliente(@RequestBody @Valid
-                                               RegisterClienteRequest registerClienteRequest) {
+                                               ClienteRequest registerClienteRequest) {
         var cliente = new Cliente();
         BeanUtils.copyProperties(registerClienteRequest, cliente);
 

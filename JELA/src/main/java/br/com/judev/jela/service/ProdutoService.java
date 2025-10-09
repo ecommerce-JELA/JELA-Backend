@@ -10,13 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
-
-    @Autowired
 
     public ProdutoService(ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
@@ -39,13 +38,22 @@ public class ProdutoService {
                 response.getEstoque());
     }
 
-    public Produto buscarPorId(Integer id) {
-        return produtoRepository.findById(id)
-                .orElse(null);
+
+    public List<ProdutoResponse> listarProdutos() {
+        List<Produto> produtos = produtoRepository.findAll();
+        return produtos.stream()
+                .map(produto -> new ProdutoResponse(
+                        produto.getNome(),
+                        produto.getDescricao(),
+                        produto.getPreco(),
+                        produto.getTamanho(),
+                        produto.getEstoque()
+                ))
+                .toList();
     }
 
-    public ProdutoResponse atualizarEstoque(int produtoId, int quantidade) {
-        Produto produto = produtoRepository.findById(produtoId)
+    public ProdutoResponse atualizarEstoque(Integer id, Integer quantidade) {
+        Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
         Estoque estoque = produto.getEstoque();
@@ -66,8 +74,8 @@ public class ProdutoService {
                 estoque);
     }
 
-    public void removerProduto(int produtoId) {
-        Produto produto = produtoRepository.findById(produtoId)
+    public void removerProduto(Integer id) {
+        Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
         produtoRepository.delete(produto);
     }

@@ -1,5 +1,6 @@
 package br.com.judev.jela.controller;
 
+import br.com.judev.jela.Repository.ProdutoRepository;
 import br.com.judev.jela.dto.Produto.ProdutoResponse;
 import br.com.judev.jela.entity.Produto;
 import br.com.judev.jela.service.ProdutoService;
@@ -8,6 +9,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/produto")
@@ -21,35 +25,25 @@ public class ProdutoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoResponse> cadastrarProduto(@RequestBody @Valid
-                                                    Produto produto){
+    public ResponseEntity<ProdutoResponse> cadastrarProduto(@RequestBody @Valid Produto produto){
         var novoProduto = new Produto();
         BeanUtils.copyProperties(produto, novoProduto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @GetMapping
-    public ResponseEntity<ProdutoResponse> getProduto(@RequestParam(value = "id") Integer id){
-        Produto produto = produtoService.buscarPorId(id);
-        if (produto == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ResponseEntity<List<ProdutoResponse>> listarProdutos() {
+        List<ProdutoResponse> produtos = produtoService.listarProdutos();
+
+        if (produtos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        ProdutoResponse produtoResponse = new ProdutoResponse(
-                produto.getNome(),
-                produto.getDescricao(),
-                produto.getPreco(),
-                produto.getTamanho(),
-                produto.getEstoque()
-        );
-        return ResponseEntity.status(HttpStatus.OK).body(produtoResponse);
+
+        return ResponseEntity.ok(produtos);
     }
 
     @DeleteMapping
-    public ResponseEntity<ProdutoResponse> deletarProduto(@RequestParam(value = "id") Integer id){
-        Produto produto = produtoService.buscarPorId(id);
-        if (produto == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public void deletarProduto(@PathVariable Integer id) {
+        produtoService.removerProduto(id);
     }
 }

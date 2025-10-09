@@ -8,6 +8,7 @@ import br.com.judev.jela.entity.Estoque;
 import br.com.judev.jela.entity.enums.Tamanho;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -38,11 +39,12 @@ public class ProdutoService {
                 response.getEstoque());
     }
 
-    public List<Produto> listarProdutos() {
-        return produtoRepository.findAll();
+    public Produto buscarPorId(Integer id) {
+        return produtoRepository.findById(id)
+                .orElse(null);
     }
 
-    public Produto atualizarEstoque(int produtoId, int quantidade) {
+    public ProdutoResponse atualizarEstoque(int produtoId, int quantidade) {
         Produto produto = produtoRepository.findById(produtoId)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
@@ -56,6 +58,17 @@ public class ProdutoService {
                     ", Quantidade solicitada: " + quantidade +
                     ", Estoque máximo: " + estoque.getQtdMaxima());
         }
-        return produtoRepository.save(produto);
+        return new ProdutoResponse(
+                produto.getNome(),
+                produto.getDescricao(),
+                produto.getPreco(),
+                produto.getTamanho(),
+                estoque);
+    }
+
+    public void removerProduto(int produtoId) {
+        Produto produto = produtoRepository.findById(produtoId)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        produtoRepository.delete(produto);
     }
 }

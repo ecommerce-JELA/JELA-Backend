@@ -92,5 +92,21 @@ public class ClienteService {
         return new AtualizarClienteResponse("Cliente atualizado com sucesso!");
     }
 
+    public ClienteResponse encontrarClientePorId(Integer id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
+
+        EnderecoResponse endereco = viaCepService.buscarEnderecoPorCep(cliente.getCep());
+
+        return new ClienteResponse(
+                cliente.getNome(),
+                cliente.getCpf(),
+                cliente.getEmail(),
+                cliente.getSenha(),
+                cliente.getTelefone(),
+                endereco
+        );
+    }
+
 
 }

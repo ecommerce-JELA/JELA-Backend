@@ -12,8 +12,14 @@ public class ViaCepService {
 
     private static final String VIA_CEP_URL = "https://viacep.com.br/ws/{cep}/json/";
 
+
     public EnderecoResponse buscarEnderecoPorCep(String cep) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject(VIA_CEP_URL, EnderecoResponse.class, cep);
+        EnderecoResponse endereco = restTemplate.getForObject(VIA_CEP_URL, EnderecoResponse.class, cep);
+
+        if (endereco == null || endereco.cep() == null) {
+            throw new IllegalArgumentException("CEP inválido ou não encontrado.");
+        }
+        return endereco;
     }
 }

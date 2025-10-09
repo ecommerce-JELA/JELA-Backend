@@ -1,10 +1,10 @@
 package br.com.judev.jela.controller;
 
 import br.com.judev.jela.Repository.ClienteRepository;
-import br.com.judev.jela.dto.cliente.ClienteRequest;
-import br.com.judev.jela.dto.cliente.ClienteResponse;
+import br.com.judev.jela.dto.cliente.*;
 import br.com.judev.jela.entity.Cliente;
 import br.com.judev.jela.service.ClienteService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +18,60 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/cliente")
 public class ClienteController {
-    @Autowired
-    private ClienteService clienteService;
 
-    @PostMapping
-    public ResponseEntity<ClienteResponse> saveCliente(@RequestBody @Valid
-                                               ClienteRequest registerClienteRequest) {
-        ClienteResponse response = clienteService.cadastrarCliente(registerClienteRequest);
+    private final ClienteService clienteService;
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
     }
+
+    @PostMapping("/cadastro")
+    public ResponseEntity<?> cadastrarCliente(@Valid @RequestBody ClienteRequest request) {
+        try {
+            ClienteResponse response = clienteService.cadastrarCliente(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao cadastrar cliente.");
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> logarCliente(@Valid @RequestBody LoginRequest request) {
+        try {
+            LoginResponse response = clienteService.logarCliente(request);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao realizar login.");
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizarCliente(@PathVariable Integer id, @Valid @RequestBody AtualizarClienteRequest request) {
+        try {
+            AtualizarClienteResponse response = clienteService.atualizarCliente(request, id);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao atualizar cliente.");
+        }
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<List<ClienteResponse>> getClientes(@PathVariable(value = "id")Integer id) {
-        ClienteResponse cliente = clienteService.encontrarClientePorId(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<?> encontrarClientePorId(@PathVariable Integer id) {
+        try {
+            ClienteResponse response = clienteService.encontrarClientePorId(id);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao buscar cliente.");
+        }
     }
 }

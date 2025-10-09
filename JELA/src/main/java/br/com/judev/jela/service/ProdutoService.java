@@ -1,9 +1,11 @@
 package br.com.judev.jela.service;
 
 import br.com.judev.jela.Repository.ProdutoRepository;
+import br.com.judev.jela.dto.Produto.ProdutoRequest;
 import br.com.judev.jela.dto.Produto.ProdutoResponse;
 import br.com.judev.jela.entity.Produto;
 import br.com.judev.jela.entity.Estoque;
+import br.com.judev.jela.entity.enums.Tamanho;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -19,14 +21,21 @@ public class ProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public Produto salvarProduto(ProdutoResponse produto) {
+    public ProdutoResponse salvarProduto(ProdutoRequest request) {
         Produto produtoSalvo = new Produto();
-        produtoSalvo.setNome(produto.nome());
-        produtoSalvo.setDescricao(produto.descricao());
-        produtoSalvo.setPreco(produto.preco());
-        produtoSalvo.setTamanho(produto.tamanho());
-        produtoSalvo.setEstoque(produto.estoque());
-        return produtoRepository.save(produtoSalvo);
+        produtoSalvo.setNome(request.nome());
+        produtoSalvo.setDescricao(request.descricao());
+        produtoSalvo.setPreco(request.preco());
+        produtoSalvo.setTamanho(Tamanho.valueOf(request.tamanho()));
+        produtoSalvo.setEstoque(request.estoque());
+
+        Produto response = produtoRepository.save(produtoSalvo);
+        return new ProdutoResponse(
+                response.getNome(),
+                response.getDescricao(),
+                response.getPreco(),
+                response.getTamanho(),
+                response.getEstoque());
     }
 
     public List<Produto> listarProdutos() {

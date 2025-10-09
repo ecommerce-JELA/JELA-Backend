@@ -6,23 +6,26 @@ import br.com.judev.jela.entity.Cliente;
 import br.com.judev.jela.Repository.ClienteRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
 
 @Service
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
-    private final RestTemplate  restTemplate;
+    private final ViaCepService viaCepService;
 
 
-    public ClienteService(ClienteRepository clienteRepository, RestTemplate restTemplate) {
+    public ClienteService(ClienteRepository clienteRepository, ViaCepService viaCepService) {
         this.clienteRepository = clienteRepository;
-        this.restTemplate = restTemplate;
+        this.viaCepService = viaCepService;
     }
 
-    public ClienteResponse cadastrarCliente(RegisterClienteRequest request) {
-        String url = "https://viacep.com.br/ws/" + request.cep() + "/json/";
-        EnderecoResponse enderecoResponse = restTemplate.getForObject(url, EnderecoResponse.class);
+    public ClienteResponse cadastrarCliente(ClienteRequest request) {
+        EnderecoResponse endereco = viaCepService.buscarEnderecoPorCep(request.cep());
+
+        if (endereco == null || endereco.cep() == null) {
+            throw new IllegalArgumentException("CEP inválido ou não encontrado.");
+        }
 
         Cliente cliente = new Cliente(
                 request.nome(),
@@ -40,10 +43,9 @@ public class ClienteService {
                 clienteSalvo.getEmail(),
                 clienteSalvo.getSenha(),
                 clienteSalvo.getTelefone(),
-                enderecoResponse
+                endereco
         );
-    }
-
+}
 
     public LoginResponse logarCliente(LoginRequest request) {
         Cliente cliente = clienteRepository.findByEmail(request.email())
@@ -55,5 +57,40 @@ public class ClienteService {
 
         return new LoginResponse("Login realizado com sucesso!");
     }
+
+    public AtualizarClienteResponse atualizarCliente(AtualizarClienteRequest request, Integer id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Cliente não encontrado."));
+
+        if (request.nome() != null && !request.nome().isBlank()) {
+            cliente.setNome(request.nome());
+        }
+
+        if (request.email() != null && !request.email().isBlank() && !request.email().equals(cliente.getEmail())) {
+            clienteRepository.findByEmail(request.email())
+                    .ifPresent(c -> {
+                        if (!c.getId().equals(cliente.getId())) {
+                            throw new IllegalArgumentException("E-mail já está sendo usado por outro cliente.");
+                        }
+                    });
+            cliente.setEmail(request.email());
+        }
+
+        if (request.telefone() != null && !request.telefone().isBlank()) {
+            cliente.setTelefone(request.telefone());
+        }
+
+        if (request.cep() != null && !request.cep().isBlank()) {
+            cliente.setCep(request.cep());
+        }
+
+        if (request.senha() != null && !request.senha().isBlank()) {
+            cliente.setSenha(request.senha());
+        }
+
+        clienteRepository.save(cliente);
+        return new AtualizarClienteResponse("Cliente atualizado com sucesso!");
+    }
+
 
 }

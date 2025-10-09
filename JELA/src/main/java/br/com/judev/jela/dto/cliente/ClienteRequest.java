@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record RegisterClienteRequest(
+public record ClienteRequest(
         @NotBlank(message = "O nome não pode estar em branco") String nome,
         @NotBlank(message = "O CPF não pode estar em branco") String cpf,
         @Email(message = "Deve ser um email valido") String email,

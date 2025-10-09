@@ -21,6 +21,8 @@ public class Cliente {
     private String email;
     private String senha;
     private String telefone;
+    @Column(length = 9, nullable = false)
+    private String cep;
 
 
  /*   @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -47,6 +49,14 @@ public class Cliente {
 
     public void setNome(String nome) {
 
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
     public String getCpf() {

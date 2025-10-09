@@ -2,7 +2,9 @@ package br.com.judev.jela.controller;
 
 import br.com.judev.jela.Repository.ClienteRepository;
 import br.com.judev.jela.dto.cliente.ClienteRequest;
+import br.com.judev.jela.dto.cliente.ClienteResponse;
 import br.com.judev.jela.entity.Cliente;
+import br.com.judev.jela.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +19,18 @@ import java.util.Optional;
 @RequestMapping("api/v1/cliente")
 public class ClienteController {
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<Cliente> saveCliente(@RequestBody @Valid
+    public ResponseEntity<ClienteResponse> saveCliente(@RequestBody @Valid
                                                ClienteRequest registerClienteRequest) {
-        var cliente = new Cliente();
-        BeanUtils.copyProperties(registerClienteRequest, cliente);
+        ClienteResponse response = clienteService.cadastrarCliente(registerClienteRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteRepository.save(cliente));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<List<Object>> getClientes(@PathVariable(value = "id")Integer id) {
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-
-        if (cliente.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body((List<Object>) cliente.get());
-        }
-
+    public ResponseEntity<List<ClienteResponse>> getClientes(@PathVariable(value = "id")Integer id) {
+        ClienteResponse cliente = clienteService.encontrarClientePorId(id);
+            return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

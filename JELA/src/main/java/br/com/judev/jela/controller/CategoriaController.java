@@ -1,6 +1,5 @@
 package br.com.judev.jela.controller;
 
-import br.com.judev.jela.Repository.CategoriaRepository;
 import br.com.judev.jela.dto.Categoria.CategoriaRequest;
 import br.com.judev.jela.dto.Categoria.CategoriaResponse;
 import br.com.judev.jela.service.CategoriaService;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/categoria")
+@RequestMapping("/api/v1/categorias")
 public class CategoriaController {
 
  private final CategoriaService  categoriaService;
